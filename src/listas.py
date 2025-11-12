@@ -9,8 +9,28 @@ def inserta_ordenado(lista_nombres: list[str], nombre: str) -> None:
     lista_nombres (list[str]): Lista de nombres ordenada por longitud.
     nombre (str): Nombre a insertar.
     """
-    # TODO: Implementa esta función
-    pass
+    # Comprobar que lista_nombres está ordenado por longitud
+    # ["ana", "maría", "miguelángel", ...]
+    ordenada = True
+    for n1, n2 in zip(lista_nombres, lista_nombres[1:]):
+        if len(n1) > len(n2):
+            ordenada = False
+            break
+    
+    if not ordenada:
+        return # Igual que poner return None
+
+    posicion_a_insertar = None
+    for i, elem in enumerate(lista_nombres):
+        if len(elem) > len(nombre):   # se podría usar >=
+            # Esta es la posición donde debería ir nombre
+            posicion_a_insertar = i
+            break
+    
+    if posicion_a_insertar != None:
+        lista_nombres.insert(posicion_a_insertar, nombre)
+    else:
+        lista_nombres.append(nombre)
 
 def busca_duplicados(lista: list) -> list:
     """
@@ -22,10 +42,13 @@ def busca_duplicados(lista: list) -> list:
     Devuelve:
     list: Lista con los elementos duplicados.
     """
-    # TODO: Implementa esta función:
-    # - usando count
-    # - usando slicing y sin usar count
-    pass
+    res = []
+    for elem in lista:
+        if lista.count(elem) > 1 and elem not in res:
+            res.append(elem)
+    return res
+
+    # TODO: Implementar con slicing y sin usar count
 
 def genera_aleatorios(n: int, minimo: int, maximo: int) -> list[int]:
     """
@@ -40,12 +63,23 @@ def genera_aleatorios(n: int, minimo: int, maximo: int) -> list[int]:
     Devuelve:
     list[int]: Lista con n números enteros aleatorios.
     """
-    # TODO: Implementa esta función
-    pass
+    lista_resultado = []
+    if n == 0:
+        return lista_resultado
+    numero_aleatorio = random.randint(minimo, maximo)
+    lista_resultado.append(numero_aleatorio)
+    for i in range(1, n):
+        numero_aleatorio = random.randint(minimo, maximo)
+        while numero_aleatorio == lista_resultado[-1]:
+            numero_aleatorio = random.randint(minimo, maximo)
+        lista_resultado.append(numero_aleatorio)
+    
+    return lista_resultado
 
 def intercala_listas(lista1: list, lista2: list) -> list:
     """
-    Intercala dos listas. Si una lista es mayor que la otra, los elementos sobrantes se añaden al final.
+    Intercala dos listas. Si una lista es mayor que la otra, 
+    los elementos sobrantes se añaden al final.
 
     Parámetros:
     lista1 (list): Primera lista.
@@ -54,8 +88,15 @@ def intercala_listas(lista1: list, lista2: list) -> list:
     Devuelve:
     list: Lista resultante de intercalar las dos listas.
     """
-    # TODO: Implementa esta función
-    pass
+    res = []
+    for a, b in zip(lista1, lista2):
+        res.append(a)
+        res.append(b)
+    if len(lista1) > len(lista2):
+        res.extend(lista1[len(lista2):])
+    elif len(lista2) > len(lista1):
+        res.extend(lista2[len(lista1):])
+    return res
 
 def mezcla_ordenadas(lista1: list, lista2: list) -> list:
     """
@@ -68,8 +109,24 @@ def mezcla_ordenadas(lista1: list, lista2: list) -> list:
     Devuelve:
     list: Lista resultante de mezclar las dos listas ordenadas.
     """
-    # TODO: Implementa esta función
-    pass
+    i, j = 0, 0
+    res=[]
+    while i<len(lista1) and j<len(lista2):
+        if lista1[i]<lista2[j]:
+            res.append(lista1[i])
+            i+=1
+        else:
+            res.append(lista2[j])
+            j+=1
+    
+    if i==len(lista1):
+        res.extend(lista2[j:])
+    #elif j==len(lista2): 
+    else:
+        res.extend(lista1[i:])
+    return res
+
+    # TODO RETO: Intentar hacerlo usando pop (y copy!)
 
 def ordena_bubble_sort(lista: list) -> None:
     """
@@ -77,6 +134,15 @@ def ordena_bubble_sort(lista: list) -> None:
 
     Parámetros:
     lista (list[int]): Lista de números enteros a ordenar.
-    """    
-# TODO: Implementa esta función
-    pass
+    """
+    ha_cambiado = True 
+    while ha_cambiado:   
+        ha_cambiado = False
+        for i in range(len(lista)-1):
+            if lista[i] > lista[i+1]:
+                lista[i], lista[i+1] = lista[i+1], lista[i]
+                ha_cambiado = True
+
+    # TODO RETO: Medir el tiempo de ejecución para varias listas (grandes)
+    # para tratar de estimar la complejidad (cuánto tarda en ejecutarse
+    # en función del tamaño de la lista)
