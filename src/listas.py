@@ -42,13 +42,19 @@ def busca_duplicados(lista: list) -> list:
     Devuelve:
     list: Lista con los elementos duplicados.
     """
+    #MÉTODO COUNT
     res = []
     for elem in lista:
         if lista.count(elem) > 1 and elem not in res:
             res.append(elem)
     return res
 
-    # TODO: Implementar con slicing y sin usar count
+    #SLICING
+    res = []
+    for elem1, elem2 in zip(lista, lista[1:]):
+        if elem1 == elem2 and elem1 not in res and elem2 not in res:
+            res.append(elem1)
+    return res
 
 def genera_aleatorios(n: int, minimo: int, maximo: int) -> list[int]:
     """
@@ -109,7 +115,7 @@ def mezcla_ordenadas(lista1: list, lista2: list) -> list:
     Devuelve:
     list: Lista resultante de mezclar las dos listas ordenadas.
     """
-    i, j = 0, 0
+    '''i, j = 0, 0
     res=[]
     while i<len(lista1) and j<len(lista2):
         if lista1[i]<lista2[j]:
@@ -124,9 +130,31 @@ def mezcla_ordenadas(lista1: list, lista2: list) -> list:
     #elif j==len(lista2): 
     else:
         res.extend(lista1[i:])
-    return res
+    return res'''
 
-    # TODO RETO: Intentar hacerlo usando pop (y copy!)
+    res = []
+    if not lista1 and not lista2:
+        return res
+    elif not lista1:
+        return lista2
+    elif not lista2:
+        return lista1
+
+    copia1 = lista1.copy()
+    copia2 = lista2.copy()
+
+    while copia1 and copia2:
+        if copia1[0] <= copia2[0]:
+            res.append(copia1.pop(0))
+        else:
+            res.append(copia2.pop(0))
+
+    if copia1:
+        res.extend(copia1)
+    elif copia2:
+        res.extend(copia2)
+            
+    return res
 
 def ordena_bubble_sort(lista: list) -> None:
     """
